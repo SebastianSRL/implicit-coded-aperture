@@ -1,6 +1,5 @@
 import torch
 import numpy as np
-import yaml
 from torch.autograd import Function
 
 def dims2coords(dims):
@@ -18,15 +17,6 @@ def normalize(x, low=0, high=1):
 # =#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
 # main functions
 # =#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
-
-def load_yml(fname):
-    with open(f'{fname}') as f:
-        config = yaml.safe_load(f.read())
-    return config
-
-def write_yml(fname, config):
-    with open(f'{fname}', 'w') as f:
-        yaml.dump(config, f, default_flow_style=False)
 
 def save_config(save_path, file, args):
     txt_name = "/model_info.txt"

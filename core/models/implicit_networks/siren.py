@@ -5,8 +5,8 @@ from .positional_encoding import PE
 from ...utils.functions import BinaryQuantize
 
 class SirenNetwork(nn.Module):
-    def __init__(self, in_features, hidden_features, layers, out_features, w0=30, w1=30, binarize=True,
-                 outermost_linear=False, exp_freq_map=False, use_pe=True, pe_info={}, device="cpu", *args, **kwargs):
+    def __init__(self, in_features, hidden_features, layers, out_features, cfg, w0=30, w1=30, binarize=True,
+                 outermost_linear=False, exp_freq_map=False, use_pe=True, device="cpu", *args, **kwargs):
         super().__init__()
         
         self.net = []
@@ -19,12 +19,12 @@ class SirenNetwork(nn.Module):
         self.exp_freq_map = exp_freq_map
         self.use_pe = use_pe
         self.device = device
-        self.pe_info = pe_info
+        self.cfg = cfg
         self.act = BinaryQuantize().apply if binarize else nn.Identity()
-        self.N_freq_by_dim = pe_info.get("N_freq_by_dim")
+        self.N_freq_by_dim = self.cfg.PE.FREQ
         
         if self.use_pe:
-            self.net.append(PE(device=self.device, **pe_info))
+            self.net.append(PE(device=self.device, cfg=self.cfg))
             self.net.append(SineLayer(in_features=2*sum(self.N_freq_by_dim), out_features=self.hidden_features, device=self.device, bias=True,
                                           is_first=True, w0=self.w0, name="Sine 0"))
         else:
