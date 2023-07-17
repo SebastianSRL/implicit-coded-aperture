@@ -7,16 +7,16 @@ _C.TRAIN.BATCH_SIZE = 2
 _C.TRAIN.INIT_EPOCH = 0
 _C.TRAIN.EPOCHS = 100
 _C.TRAIN.WORKERS = 0
-_C.TRAIN.DATASET_DIR = 'data/AradVal'
-_C.TRAIN.SAVE_DIR = 'm2s'
-_C.TRAIN.RESULT_DIR = 'results'
+_C.TRAIN.DATASET_DIR = "data/AradVal"
+_C.TRAIN.SAVE_DIR = "m2s"
+_C.TRAIN.RESULT_DIR = "results"
 _C.TRAIN.WEIGHTS_DIR = None
 _C.TRAIN.SEED = 0
 
 _C.DECODER = CN()
-_C.DECODER.NAME = 'unet'
+_C.DECODER.NAME = "unet"
 _C.DECODER.LR = 1e-4
-_C.DECODER.SHAPE =  [256,256,31]
+_C.DECODER.SHAPE = [256, 256, 31]
 
 _C.ENCODER = CN()
 _C.ENCODER.STRIDE = 2
@@ -28,13 +28,13 @@ _C.ENCODER.TRAINABLE = True
 
 _C.INR = CN()
 _C.INR.USE = True
-_C.INR.NAME = 'relu'
+_C.INR.NAME = "relu"
 _C.INR.IN = 2
 _C.INR.OUT = 1
-_C.UNITS = 128
-_C.LAYERS = 3 
-_C.BINARIZE = True
-_C.LINEAR = True
+_C.INR.UNITS = 128
+_C.INR.LAYERS = 3
+_C.INR.BINARIZE = True
+_C.INR.LINEAR = True
 
 _C.PE = CN()
 _C.PE.USE = True
@@ -42,6 +42,7 @@ _C.PE.SCALE = 1
 _C.PE.FREQ = [8, 5]
 _C.PE.DETERMINISTIC = True
 _C.PE.EXP = True
+
 
 def get_cfg_defaults():
     return _C.clone()

@@ -1,14 +1,14 @@
 import random
-import scipy.io as sio
 
+import scipy.io as sio
 import torch
 import torch.nn as nn
-
 from einops import repeat
+
 from ...utils.functions import dims2coords
-from ..implicit_networks.wire import WireNetwork
 from ..implicit_networks.relu import ReLUNetwork
 from ..implicit_networks.siren import SirenNetwork
+from ..implicit_networks.wire import WireNetwork
 
 # =#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
 # optical encoders
@@ -28,7 +28,6 @@ class CASSI(nn.Module):
         is_patch=True,
         y_norm=False,
         use_inr=True,
-        inr_info={},
         device="cpu",
         **kwargs,
     ):
@@ -59,6 +58,7 @@ class CASSI(nn.Module):
                     hidden_features=self.cfg.INR.LAYERS,
                     out_features=self.cfg.INR.OUT,
                     binarize=self.cfg.INR.BINARIZE,
+                    layers=self.cfg.INR.LAYERS,
                 )
             elif self.cfg.INR.NAME == "wire":
                 self.inr = WireNetwork(
@@ -67,6 +67,7 @@ class CASSI(nn.Module):
                     hidden_features=self.cfg.INR.LAYERS,
                     out_features=self.cfg.INR.OUT,
                     binarize=self.cfg.INR.BINARIZE,
+                    layers=self.cfg.INR.LAYERS,
                 )
             elif self.cfg.INR.NAME == "relu":
                 self.inr = ReLUNetwork(
@@ -75,6 +76,7 @@ class CASSI(nn.Module):
                     hidden_features=self.cfg.INR.LAYERS,
                     out_features=self.cfg.INR.OUT,
                     binarize=self.cfg.INR.BINARIZE,
+                    layers=self.cfg.INR.LAYERS,
                 )
         else:
             if self.mask_path is None:

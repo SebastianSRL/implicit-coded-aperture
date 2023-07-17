@@ -1,17 +1,16 @@
 #!/usr/bin/env python
-import os
 import argparse
+import os
+from contextlib import redirect_stdout
+from itertools import product
+from pathlib import Path
 
+import numpy as np
 import torch.optim
 import torch.utils.data
-import numpy as np
 
-from itertools import product
-from contextlib import redirect_stdout
-from pathlib import Path
-from core import M2S, Dataset
 from config.default import get_cfg_defaults
-
+from core import M2S, Dataset
 
 # config file path
 # activate gpu
@@ -42,7 +41,7 @@ def main(cfg):
     # # Paths and conditions
     result_path = cfg.TRAIN.RESULT_DIR
     save_path = cfg.TRAIN.SAVE_DIR
-    save_path = f"{result_path}/{save_path}_{cfg.MODEL.NAME}_no_noise"
+    save_path = f"{result_path}/{save_path}_{cfg.DECODER.NAME}_no_noise"
 
     if cfg.ENCODER.TRAINABLE:
         if cfg.INR.USE:
@@ -62,7 +61,7 @@ def main(cfg):
     # =#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
 
     # Save the specified configuration
-    with open(f"{save_path}/test.yml", "w") as f:
+    with open(f"{save_path}/config.yml", "w") as f:
         with redirect_stdout(f):
             print(cfg.dump())
 
@@ -83,7 +82,7 @@ def main(cfg):
         save_path=save_path,
         device=device,
         input_shape=cfg.DECODER.SHAPE,
-        model=cfg.MODEL.NAME,
+        model=cfg.DECODER.NAME,
         lr=cfg.DECODER.LR,
     )
 
@@ -98,9 +97,7 @@ def main(cfg):
     # =#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
 
     if cfg.TRAIN.WEIGHTS_DIR:
-        m2s_model.load_checkpoint(
-            cfg.cfg.TRAIN.WEIGHTS_DIR, epoch=cfg.TRAIN.INIT_EPOCHS
-        )
+        m2s_model.load_checkpoint(cfg.cfg.TRAIN.WEIGHTS_DIR, epoch=cfg.TRAIN.INIT_EPOCH)
         print("¡Model checkpoint loaded correctly!")
 
     # =#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
@@ -108,7 +105,7 @@ def main(cfg):
     # =#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
 
     m2s_model.train(
-        train_loader, cfg.TRAIN.INIT_EPOCHS, cfg.TRAIN.EPOCHS, val_loader=val_loader[0]
+        train_loader, cfg.TRAIN.INIT_EPOCH, cfg.TRAIN.EPOCHS, val_loader=val_loader[0]
     )
 
 
