@@ -1,5 +1,6 @@
-TRAIN:
-  INIT_EPOCH: 0
-  EPOCHS: 100
 DECODER:
-  NAME: unet
+  NAME: dssp
+INR:
+  USE: False
+TRAIN:
+  BATCH_SIZE: 8

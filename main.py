@@ -20,7 +20,7 @@ print(f"Torch version: {torch.__version__}")
 
 def get_args():
     args = argparse.ArgumentParser()
-    args.add_argument("--config", type=str, default=None)
+    args.add_argument("--config", type=str, default="config/config.yml")
     return args.parse_args()
 
 
@@ -31,7 +31,7 @@ def main(cfg):
 
     if cfg.DECODER.NAME == "dssp":
         cfg.defrost()
-        cfg.merge_from_list(["ENCODER.STRIDES", 1])
+        cfg.merge_from_list(["ENCODER.STRIDE", 1])
         cfg.freeze()
 
     # =#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
